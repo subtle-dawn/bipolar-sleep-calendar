@@ -5,12 +5,12 @@
   <meta name="theme-color" content="#4c7565">
   <meta name="description" content="日々の気分と睡眠をひと目で振り返る、ブラウザ保存のカレンダー。">
   <title>躁鬱睡眠カレンダー</title>
-  <link rel="stylesheet" href="style.css?v=20260919-icons-2">
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=20260919-time-icons">
+  <script src="app.js?v=20260919-status-removed" defer></script>
 </head>
 <body>
   <header>
-    <a class="brand" href="index.html"><span class="logo">☾</span> 躁鬱睡眠カレンダー</a>
+    <a class="brand" href="index.html">躁鬱睡眠カレンダー</a>
     <div class="header-actions">
       <button id="export" class="text-button" aria-label="エクスポート" title="エクスポート"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></button>
       <button id="import" class="text-button" aria-label="インポート" title="インポート"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 15V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></button>
@@ -21,10 +21,8 @@
   <main>
     <section class="calendar-panel" aria-label="月間カレンダー">
       <div class="calendar-toolbar"><div class="month-nav"><h2 id="month-title"></h2><button id="prev" aria-label="前の月">‹</button><button id="next" aria-label="次の月">›</button><button id="this-month" class="text-button">今月</button></div><span class="hint">日付を選んで記録・編集</span></div>
-      <div class="legend"><span class="mood high">躁</span><span class="mood up">やや躁</span><span class="mood steady">安定</span><span class="mood down">やや鬱</span><span class="mood low">鬱</span><span class="sleep-key">☀ 起床<span class="mobile">（上段）</span>　☾ 就寝<span class="mobile">（下段）</span></span></div>
       <div class="weekdays" aria-hidden="true"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div><div id="calendar" class="calendar"></div>
     </section>
-    <p id="status" role="status" aria-live="polite"></p>
   </main>
   <dialog id="editor"><form id="record-form"><div class="dialog-header"><div><p class="eyebrow">DAILY CHECK-IN</p><h2 id="edit-title"></h2></div><button type="button" id="close" class="close" aria-label="閉じる">×</button></div>
     <fieldset><legend>今日の気分</legend><div class="mood-options"><label class="high"><input type="radio" name="mood" value="high">躁</label><label class="up"><input type="radio" name="mood" value="up">やや躁</label><label class="steady"><input type="radio" name="mood" value="steady">安定</label><label class="down"><input type="radio" name="mood" value="down">やや鬱</label><label class="low"><input type="radio" name="mood" value="low">鬱</label></div></fieldset>

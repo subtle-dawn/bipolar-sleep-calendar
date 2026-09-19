@@ -29,11 +29,11 @@ if (typeof document !== 'undefined') {
   const now = new Date();
   let month = new Date(now.getFullYear(), now.getMonth(), 1);
   try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) records = validateRecords(JSON.parse(raw)); }
-  catch { storageHealthy = false; $('status').textContent = '保存データを読み込めませんでした。既存データ保護のため保存を停止しています。ブラウザの保存設定を確認するか、バックアップから復元してください。'; }
+  catch { storageHealthy = false; }
   function persist(next, restoring = false) {
     if (!storageHealthy && !restoring) { $('form-error').textContent = '保存データを読み込めていないため保存できません。バックアップからの復元をお試しください。'; return false; }
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); records = next; storageHealthy = true; return true; }
-    catch { $('status').textContent = $('form-error').textContent = '保存できませんでした。ブラウザの保存設定・空き容量を確認してください。'; return false; }
+    catch { $('form-error').textContent = '保存できませんでした。ブラウザの保存設定・空き容量を確認してください。'; return false; }
   }
   function render() {
     $('month-title').textContent = `${month.getFullYear()}年 ${month.getMonth() + 1}月`;
@@ -89,18 +89,18 @@ if (typeof document !== 'undefined') {
     const record = { mood: document.querySelector('input[name="mood"]:checked')?.value || '', bed: $('bed').value, wake: $('wake').value, offset: Number($('bed-offset').value), note: $('note').value.trim() };
     if (!record.mood && !record.bed && !record.wake && !record.note) { $('form-error').textContent = '気分・時刻・メモのいずれかを入力してください。'; return; }
     try { validateRecords({ [selected]: record }); } catch (error) { $('form-error').textContent = error.message; return; }
-    if (persist({ ...records, [selected]: record })) { month = new Date(`${selected.slice(0, 7)}-01T12:00:00`); render(); $('editor').close(); $('status').textContent = '記録を保存しました。'; }
+    if (persist({ ...records, [selected]: record })) { month = new Date(`${selected.slice(0, 7)}-01T12:00:00`); render(); $('editor').close(); }
   };
   $('delete').onclick = () => {
     if (!confirm('この日の記録を削除しますか？')) return;
     const next = { ...records }; delete next[selected];
-    if (persist(next)) { render(); $('editor').close(); $('status').textContent = '記録を削除しました。'; }
+    if (persist(next)) { render(); $('editor').close(); }
   };
   $('export').onclick = () => {
-    if (!storageHealthy) { $('status').textContent = '保存データの読み込みに失敗しているため、バックアップを作成できません。'; return; }
+    if (!storageHealthy) { alert('保存データの読み込みに失敗しているため、バックアップを作成できません。'); return; }
     const url = URL.createObjectURL(new Blob([JSON.stringify({ version: 1, records }, null, 2)], { type: 'application/json' }));
     const link = document.createElement('a'); link.href = url; link.download = `躁鬱睡眠カレンダー-${dateKey(new Date())}.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-    $('status').textContent = 'バックアップファイルを作成しました。';
+   
   };
   $('import').onclick = () => $('import-file').click();
   $('import-file').onchange = async event => {
@@ -111,8 +111,8 @@ if (typeof document !== 'undefined') {
       if (data.version !== 1) throw new Error('対応していないバックアップ形式です。');
       const imported = validateRecords(data.records);
       if (!confirm(`${Object.keys(imported).length}日分の記録を復元します。同じ日付の記録は上書きされます。よろしいですか？`)) return;
-      if (persist({ ...records, ...imported }, true)) { render(); $('status').textContent = 'バックアップから復元しました。'; }
-    } catch (error) { $('status').textContent = `復元できませんでした：${error.message}`; }
+      if (persist({ ...records, ...imported }, true)) { render(); }
+    } catch (error) { alert(`復元できませんでした：${error.message}`); }
     finally { event.target.value = ''; }
   };
   render();
