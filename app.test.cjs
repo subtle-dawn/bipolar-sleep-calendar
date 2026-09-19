@@ -1,0 +1,11 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { sleepMinutes, validateRecords } = require('./app.js');
+const record = { mood: 'steady', bed: '23:30', wake: '07:00', offset: 1, note: '' };
+test('前日就寝と日付をまたいだ睡眠', () => assert.equal(sleepMinutes(record), 450));
+test('当日深夜就寝', () => assert.equal(sleepMinutes({ ...record, bed: '01:00', offset: 0 }), 360));
+test('時刻片方のみは睡眠集計から除外', () => assert.equal(sleepMinutes({ ...record, wake: '' }), null));
+test('バックアップの正常な記録を復元', () => assert.deepEqual(validateRecords({ '2026-09-19': record }), { '2026-09-19': record }));
+test('存在しない日付を拒否', () => assert.throws(() => validateRecords({ '2026-02-30': record })));
+test('不正な気分値と時刻を拒否', () => { for (const change of [{ mood: 'constructor' }, { wake: '25:00' }, { offset: 2 }, { note: null }]) assert.throws(() => validateRecords({ '2026-09-19': { ...record, ...change } })); });
+test('逆転した睡眠・24時間超を拒否', () => { for (const change of [{ offset: 0 }, { bed: '01:00' }]) assert.throws(() => validateRecords({ '2026-09-19': { ...record, ...change } })); });
