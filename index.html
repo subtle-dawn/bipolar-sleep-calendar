@@ -9,7 +9,15 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <header><a class="brand" href="index.html"><span class="logo">☾</span> 躁鬱睡眠カレンダー</a><div class="header-actions"><button id="export" class="text-button">エクスポート</button><button id="import" class="text-button">インポート</button><button id="today-record" class="primary">＋ 記録追加</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></header>
+  <header>
+    <a class="brand" href="index.html"><span class="logo">☾</span> 躁鬱睡眠カレンダー</a>
+    <div class="header-actions">
+      <button id="export" class="text-button" aria-label="エクスポート" title="エクスポート"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></button>
+      <button id="import" class="text-button" aria-label="インポート" title="インポート"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 15V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></button>
+      <button id="today-record" class="primary" aria-label="記録追加" title="記録追加"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></button>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+    </div>
+  </header>
   <main>
     <section class="calendar-panel" aria-label="月間カレンダー">
       <div class="calendar-toolbar"><div class="month-nav"><h2 id="month-title"></h2><button id="prev" aria-label="前の月">‹</button><button id="next" aria-label="次の月">›</button><button id="this-month" class="text-button">今月</button></div><span class="hint">日付を選んで記録・編集</span></div>
