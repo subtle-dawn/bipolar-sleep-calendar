@@ -51,7 +51,7 @@ if (typeof document !== 'undefined') {
         }
         if (record.napStart || record.napEnd) {
           const nap = add('', 'nap-time');
-          for (const text of ['昼寝', record.napStart || '—', '〜', record.napEnd || '—']) {
+          for (const text of [`😪 ${record.napStart || '—'}`, `😲 ${record.napEnd || '—'}`]) {
             nap.append(Object.assign(document.createElement('span'), { textContent: text }));
           }
         }

@@ -105,6 +105,7 @@ header { height: auto; min-height: 84px; gap: 16px; flex-wrap: wrap; padding: 16
 .nap-inputs { margin: 24px 0 0; }
 .nap-inputs legend span { font-size: 11px; font-weight: 400; color: #77877e; }
 .nap-time { display: flex; flex-wrap: wrap; gap: 3px; font-size: 11px; color: #637d6f; font-variant-numeric: tabular-nums; }
+.nap-time > span { white-space: nowrap; }
 @media (max-width: 760px) {
   .nap-time { flex-direction: column; align-items: center; gap: 1px; font-size: clamp(10px, 2.7vw, 12px); }
 }
