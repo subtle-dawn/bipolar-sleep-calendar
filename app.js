@@ -41,7 +41,8 @@ if (typeof document !== 'undefined') {
       add(date.getDate(), 'date-number');
       const hasInput = record && [record.mood, record.wake, record.napStart, record.napEnd, record.bed, record.note].some(value => value?.trim());
       if (hasInput) {
-        add(MOODS[record.mood] || 'ー', `mood ${record.mood || 'unrecorded'}`);
+        const mood = add(MOODS[record.mood] || '\u00a0', `mood ${record.mood || 'unrecorded'}`);
+        if (!record.mood) mood.setAttribute('aria-hidden', 'true');
         const times = add('', 'times');
         for (const [icon, value, kind] of [
           ['☀️', record.wake, 'wake-time'],
@@ -50,7 +51,12 @@ if (typeof document !== 'undefined') {
           ['🌙', record.bed, 'bed-time']
         ]) {
           const row = document.createElement('span'); row.className = kind;
-          row.append(Object.assign(document.createElement('span'), { className: 'time-icon', textContent: `${icon} ` }), document.createTextNode(value || 'ー'));
+          if (value?.trim()) {
+            row.append(Object.assign(document.createElement('span'), { className: 'time-icon', textContent: `${icon} ` }), document.createTextNode(value));
+          } else {
+            row.textContent = '\u00a0';
+            row.setAttribute('aria-hidden', 'true');
+          }
           times.append(row);
         }
         if (record.note) add(record.note, 'day-note');

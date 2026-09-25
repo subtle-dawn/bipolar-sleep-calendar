@@ -19,7 +19,7 @@ test('manifest icons exist at their declared sizes, with paths scoped to the pro
 test('service worker caches app assets, supports offline navigation and isolates other projects', async () => {
   const scope = 'https://example.test/sleep/';
   const handlers = {}, deleted = [], cached = new Map();
-  const current = `sleep-calendar-${scope}-v16`;
+  const current = `sleep-calendar-${scope}-v17`;
   const cache = {
     async addAll(requests) {
       for (const request of requests) {

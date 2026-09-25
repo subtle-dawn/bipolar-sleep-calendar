@@ -5,7 +5,7 @@ header { height: auto; min-height: 84px; gap: 16px; flex-wrap: wrap; padding: 16
 .header-actions button { display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; flex: 0 0 44px; border-radius: 9px; }
 .header-actions svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .times > span { white-space: nowrap; }
-.mood.unrecorded { background: #eceeed; color: #777e79; }
+.mood.unrecorded { visibility: hidden; }
 .times { flex-direction: column; }
 .nap-start-time, .nap-end-time { color: #637d6f; }
 .day:focus-visible { outline-offset: -3px; z-index: 1; }
