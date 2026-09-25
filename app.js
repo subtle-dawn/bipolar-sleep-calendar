@@ -8,7 +8,8 @@ function validateRecords(data) {
   for (const [key, record] of Object.entries(data)) {
     if (!record || typeof record !== 'object' || Array.isArray(record)) throw new Error('記録形式が正しくありません。');
     if (!(record.mood === '' || Object.hasOwn(MOODS, record.mood)) || typeof record.bed !== 'string' || typeof record.wake !== 'string' || typeof record.note !== 'string' || record.note.length > 1000) throw new Error('記録内容が正しくありません。');
-    Object.defineProperty(clean, key, { value: { mood: record.mood, bed: record.bed, wake: record.wake, ...(record.offset !== undefined ? { offset: record.offset } : {}), note: record.note }, enumerable: true, configurable: true, writable: true });
+    if ((record.napStart !== undefined && typeof record.napStart !== 'string') || (record.napEnd !== undefined && typeof record.napEnd !== 'string')) throw new Error('昼寝の記録形式が正しくありません。');
+    Object.defineProperty(clean, key, { value: { mood: record.mood, bed: record.bed, wake: record.wake, ...(record.napStart !== undefined ? { napStart: record.napStart } : {}), ...(record.napEnd !== undefined ? { napEnd: record.napEnd } : {}), ...(record.offset !== undefined ? { offset: record.offset } : {}), note: record.note }, enumerable: true, configurable: true, writable: true });
   }
   return clean;
 }
@@ -34,7 +35,7 @@ if (typeof document !== 'undefined') {
       const date = new Date(start); date.setDate(start.getDate() + i);
       const key = dateKey(date), record = records[key];
       const button = document.createElement('button'); button.className = `day${date.getMonth() !== month.getMonth() ? ' outside' : ''}${key === dateKey(now) ? ' today' : ''}`;
-      button.setAttribute('aria-label', `${date.getMonth() + 1}月${date.getDate()}日 ${record ? [MOODS[record.mood], record.wake && `起床${record.wake}`, record.bed && `就寝${record.bed}`, record.note].filter(Boolean).join('、') : '未記録'}、記録を編集`);
+      button.setAttribute('aria-label', `${date.getMonth() + 1}月${date.getDate()}日 ${record ? [MOODS[record.mood], record.wake && `起床${record.wake}`, record.bed && `就寝${record.bed}`, record.napStart && `昼寝開始${record.napStart}`, record.napEnd && `昼寝終了${record.napEnd}`, record.note].filter(Boolean).join('、') : '未記録'}、記録を編集`);
       if (key === dateKey(now)) button.setAttribute('aria-current', 'date');
       function add(text, className) { const span = document.createElement('span'); span.className = className; span.textContent = text; button.append(span); return span; }
       add(date.getDate(), 'date-number');
@@ -46,6 +47,12 @@ if (typeof document !== 'undefined') {
             const row = document.createElement('span'); row.className = kind;
             row.append(Object.assign(document.createElement('span'), { className: 'time-icon', textContent: `${icon} ` }), document.createTextNode(value || '—'));
             times.append(row);
+          }
+        }
+        if (record.napStart || record.napEnd) {
+          const nap = add('', 'nap-time');
+          for (const text of ['昼寝', record.napStart || '—', '〜', record.napEnd || '—']) {
+            nap.append(Object.assign(document.createElement('span'), { textContent: text }));
           }
         }
         if (record.note) add(record.note, 'day-note');
@@ -60,6 +67,7 @@ if (typeof document !== 'undefined') {
     const record = records[key];
     if (record) {
       if (record.mood) document.querySelector(`input[name="mood"][value="${record.mood}"]`).checked = true;
+      $('nap-start').value = record.napStart || ''; $('nap-end').value = record.napEnd || '';
       $('bed').value = record.bed; $('wake').value = record.wake; $('note').value = record.note;
     }
     $('delete').hidden = !record; $('editor').showModal();
@@ -71,8 +79,8 @@ if (typeof document !== 'undefined') {
   $('close').onclick = () => $('editor').close();
   $('record-form').onsubmit = event => {
     event.preventDefault();
-    const record = { mood: document.querySelector('input[name="mood"]:checked')?.value || '', bed: $('bed').value, wake: $('wake').value, note: $('note').value.trim() };
-    if (!record.mood && !record.bed && !record.wake && !record.note) { $('form-error').textContent = '気分・時刻・メモのいずれかを入力してください。'; return; }
+    const record = { mood: document.querySelector('input[name="mood"]:checked')?.value || '', bed: $('bed').value, wake: $('wake').value, napStart: $('nap-start').value, napEnd: $('nap-end').value, note: $('note').value.trim() };
+    if (!record.mood && !record.bed && !record.wake && !record.napStart && !record.napEnd && !record.note) { $('form-error').textContent = '気分・時刻・メモのいずれかを入力してください。'; return; }
     try { validateRecords({ [selected]: record }); } catch (error) { $('form-error').textContent = error.message; return; }
     if (persist({ ...records, [selected]: record })) { month = new Date(`${selected.slice(0, 7)}-01T12:00:00`); render(); $('editor').close(); }
   };

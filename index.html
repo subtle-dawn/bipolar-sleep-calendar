@@ -11,16 +11,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="睡眠カレンダー">
-  <link rel="stylesheet" href="style.css?v=20260919-header-padding">
-  <script src="app.js?v=20260919-no-duration" defer></script>
+  <link rel="stylesheet" href="style.css?v=20260925-nap">
+  <script src="app.js?v=20260925-nap" defer></script>
   <script src="pwa.js" defer></script>
 </head>
 <body>
   <header>
     <a class="brand" href="index.html">躁鬱睡眠カレンダー</a>
     <div class="header-actions">
-      <button id="export" class="text-button" aria-label="エクスポート" title="エクスポート"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></button>
-      <button id="import" class="text-button" aria-label="インポート" title="インポート"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 15V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></button>
+      <button id="export" class="text-button" aria-label="エクスポート" title="エクスポート"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 15V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></button>
+      <button id="import" class="text-button" aria-label="インポート" title="インポート"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></button>
       <button id="today-record" class="primary" aria-label="記録追加" title="記録追加"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></button>
       <input id="import-file" type="file" accept="application/json,.json" hidden>
     </div>
@@ -34,6 +34,7 @@
   <dialog id="editor"><form id="record-form" novalidate><div class="dialog-header"><div><h2 id="edit-title"></h2></div><button type="button" id="close" class="close" aria-label="閉じる">×</button></div>
     <fieldset><legend>今日の気分</legend><div class="mood-options"><label class="high"><input type="radio" name="mood" value="high">躁</label><label class="up"><input type="radio" name="mood" value="up">やや躁</label><label class="steady"><input type="radio" name="mood" value="steady">安定</label><label class="down"><input type="radio" name="mood" value="down">やや鬱</label><label class="low"><input type="radio" name="mood" value="low">鬱</label></div></fieldset>
     <div class="sleep-inputs"><label>☀ 起床時刻<input id="wake" type="time"></label><label>☾ 就寝時刻<input id="bed" type="time"></label></div>
+    <fieldset class="nap-inputs"><legend>昼寝 <span>任意</span></legend><div class="sleep-inputs"><label>開始時刻<input id="nap-start" type="time"></label><label>終了時刻<input id="nap-end" type="time"></label></div></fieldset>
     <label class="note-label">ひとことメモ <span>任意</span><textarea id="note" rows="3" maxlength="1000" placeholder="体調や、その日にあったことなど"></textarea></label>
     <p id="form-error" role="alert"></p><div class="dialog-actions"><button type="button" id="delete" class="danger">記録を削除</button><button type="submit" class="primary">保存する</button></div>
   </form></dialog>
