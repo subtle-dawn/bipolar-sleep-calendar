@@ -1,12 +1,12 @@
 'use strict';
 // Change VERSION whenever any cached file changes. Updates activate after all app tabs close.
-const VERSION = 'v4';
+const VERSION = 'v14';
 const BASE = self.registration.scope;
 const PREFIX = `sleep-calendar-${BASE}-`;
 const CACHE = `${PREFIX}${VERSION}`;
 const FILES = [
-  'index.html', 'style.css?v=20260925-nap-icons',
-  'app.js?v=20260925-nap-icons', 'pwa.js', 'manifest.webmanifest',
+  'index.html', 'style.css?v=20260925-partial-record',
+  'app.js?v=20260925-partial-record', 'pwa.js', 'manifest.webmanifest',
   'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png',
   'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png'
 ];

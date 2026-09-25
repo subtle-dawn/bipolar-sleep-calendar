@@ -35,25 +35,23 @@ if (typeof document !== 'undefined') {
       const date = new Date(start); date.setDate(start.getDate() + i);
       const key = dateKey(date), record = records[key];
       const button = document.createElement('button'); button.className = `day${date.getMonth() !== month.getMonth() ? ' outside' : ''}${key === dateKey(now) ? ' today' : ''}`;
-      button.setAttribute('aria-label', `${date.getMonth() + 1}月${date.getDate()}日 ${record ? [MOODS[record.mood], record.wake && `起床${record.wake}`, record.bed && `就寝${record.bed}`, record.napStart && `昼寝開始${record.napStart}`, record.napEnd && `昼寝終了${record.napEnd}`, record.note].filter(Boolean).join('、') : '未記録'}、記録を編集`);
+      button.setAttribute('aria-label', `${date.getMonth() + 1}月${date.getDate()}日 ${record ? [MOODS[record.mood], record.wake && `起床${record.wake}`, record.napStart && `昼寝開始${record.napStart}`, record.napEnd && `昼寝終了${record.napEnd}`, record.bed && `就寝${record.bed}`, record.note].filter(Boolean).join('、') : '未記録'}、記録を編集`);
       if (key === dateKey(now)) button.setAttribute('aria-current', 'date');
       function add(text, className) { const span = document.createElement('span'); span.className = className; span.textContent = text; button.append(span); return span; }
       add(date.getDate(), 'date-number');
-      if (record) {
-        if (record.mood) add(MOODS[record.mood], `mood ${record.mood}`);
+      const hasInput = record && [record.mood, record.wake, record.napStart, record.napEnd, record.bed, record.note].some(value => value?.trim());
+      if (hasInput) {
+        add(MOODS[record.mood] || 'ー', `mood ${record.mood || 'unrecorded'}`);
         const times = add('', 'times');
-        if (record.wake || record.bed) {
-          for (const [icon, value, kind] of [['☀', record.wake, 'wake-time'], ['☾', record.bed, 'bed-time']]) {
-            const row = document.createElement('span'); row.className = kind;
-            row.append(Object.assign(document.createElement('span'), { className: 'time-icon', textContent: `${icon} ` }), document.createTextNode(value || '—'));
-            times.append(row);
-          }
-        }
-        if (record.napStart || record.napEnd) {
-          const nap = add('', 'nap-time');
-          for (const text of [`😪 ${record.napStart || '—'}`, `😲 ${record.napEnd || '—'}`]) {
-            nap.append(Object.assign(document.createElement('span'), { textContent: text }));
-          }
+        for (const [icon, value, kind] of [
+          ['☀️', record.wake, 'wake-time'],
+          ['😪', record.napStart, 'nap-start-time'],
+          ['😲', record.napEnd, 'nap-end-time'],
+          ['🌙', record.bed, 'bed-time']
+        ]) {
+          const row = document.createElement('span'); row.className = kind;
+          row.append(Object.assign(document.createElement('span'), { className: 'time-icon', textContent: `${icon} ` }), document.createTextNode(value || 'ー'));
+          times.append(row);
         }
         if (record.note) add(record.note, 'day-note');
       } else add('＋', 'empty-plus');

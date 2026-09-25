@@ -11,8 +11,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="睡眠カレンダー">
-  <link rel="stylesheet" href="style.css?v=20260925-nap-icons">
-  <script src="app.js?v=20260925-nap-icons" defer></script>
+  <link rel="stylesheet" href="style.css?v=20260925-partial-record">
+  <script src="app.js?v=20260925-partial-record" defer></script>
   <script src="pwa.js" defer></script>
 </head>
 <body>
@@ -33,9 +33,13 @@
   </main>
   <dialog id="editor"><form id="record-form" novalidate><div class="dialog-header"><div><h2 id="edit-title"></h2></div><button type="button" id="close" class="close" aria-label="閉じる">×</button></div>
     <fieldset><legend>今日の気分</legend><div class="mood-options"><label class="high"><input type="radio" name="mood" value="high">躁</label><label class="up"><input type="radio" name="mood" value="up">やや躁</label><label class="steady"><input type="radio" name="mood" value="steady">安定</label><label class="down"><input type="radio" name="mood" value="down">やや鬱</label><label class="low"><input type="radio" name="mood" value="low">鬱</label></div></fieldset>
-    <div class="sleep-inputs"><label>☀ 起床時刻<input id="wake" type="time"></label><label>☾ 就寝時刻<input id="bed" type="time"></label></div>
-    <fieldset class="nap-inputs"><legend>昼寝 <span>任意</span></legend><div class="sleep-inputs"><label>開始時刻<input id="nap-start" type="time"></label><label>終了時刻<input id="nap-end" type="time"></label></div></fieldset>
-    <label class="note-label">ひとことメモ <span>任意</span><textarea id="note" rows="3" maxlength="1000" placeholder="体調や、その日にあったことなど"></textarea></label>
+    <div class="sleep-inputs">
+      <label>☀️ 起床時刻<input id="wake" type="time"></label>
+      <label>😪 昼寝開始時刻 <span class="optional">（任意）</span><input id="nap-start" type="time"></label>
+      <label>😲 昼寝終了時刻 <span class="optional">（任意）</span><input id="nap-end" type="time"></label>
+      <label>🌙 就寝時刻<input id="bed" type="time"></label>
+    </div>
+    <label class="note-label">メモ <span>（任意）</span><textarea id="note" rows="3" maxlength="1000" placeholder="体調や、その日にあったことなど"></textarea></label>
     <p id="form-error" role="alert"></p><div class="dialog-actions"><button type="button" id="delete" class="danger">記録を削除</button><button type="submit" class="primary">保存する</button></div>
   </form></dialog>
 </body>
