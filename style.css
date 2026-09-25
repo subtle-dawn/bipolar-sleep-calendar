@@ -105,7 +105,9 @@ header { height: auto; min-height: 84px; gap: 16px; flex-wrap: wrap; padding: 16
   .month-nav h2 { font-size: 16px; }
 }
 
-.sleep-inputs { grid-template-columns: minmax(0, 1fr); }
+.sleep-inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sleep-inputs > label:first-child, .sleep-inputs > label:last-child { grid-column: 1 / -1; }
+.sleep-inputs > label { min-width: 0; }
 #editor {
   position: fixed;
   inset: 0;
