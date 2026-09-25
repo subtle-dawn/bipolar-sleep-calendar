@@ -69,6 +69,7 @@ if (typeof document !== 'undefined') {
       $('bed').value = record.bed; $('wake').value = record.wake; $('note').value = record.note;
     }
     $('delete').hidden = !record; $('editor').showModal();
+    $('close').focus({ preventScroll: true }); $('editor').scrollTop = 0;
   }
   $('prev').onclick = () => { month.setMonth(month.getMonth() - 1); render(); };
   $('next').onclick = () => { month.setMonth(month.getMonth() + 1); render(); };
